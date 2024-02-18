@@ -9,6 +9,6 @@
     "esModuleInterop": true,
     "allowJs": true
   },
-  "include": ["src/ws_server/*"],
+  "include": ["src/ws_server/*", "src/ws_server/models/usersDB.ts"],
   "exclude": ["node_modules", "front"]
 }
