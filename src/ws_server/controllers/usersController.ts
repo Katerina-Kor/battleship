@@ -1,12 +1,12 @@
 import { WebSocket } from "ws";
 import { User } from "../models/user"
-import { usersDB } from "../models/usersDB"
+import { database } from "../database/database";
 
-export class UsersController {
-  private users: User[] = usersDB;
+class UsersController {
+  private users: User[] = database.users;
 
   public getUserByUsername = (name: string) => {
-    return this.users.find((user) => user.getUsername() === name);
+    return this.users.find((user) => user.username === name);
   };
 
   public createNewUser = (name: string, password: string, socket: WebSocket) => {
@@ -16,7 +16,8 @@ export class UsersController {
   };
 
   public getUserBySocket = (socket: WebSocket) => {
-    return this.users.find((user) => user.getSocket() === socket) as User;
+    return this.users.find((user) => user.socket === socket) as User;
   }
-  
 }
+
+export const usersController = new UsersController();

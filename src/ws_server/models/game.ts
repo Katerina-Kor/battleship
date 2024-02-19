@@ -1,62 +1,66 @@
-import { WebSocket } from "ws";
-import { User } from "./user";
-import { IShipPosition } from "../types";
-import { Room } from "./room";
+import { Ship } from './ship';
+import { IGamePlayers } from "../types";
+import { getRandomTurn } from "../utils";
 
 let allowId: number = 0;
 
 export class Game {
-  private id: number;
-  private player1: {
-    user: User,
-    shipsPosition: IShipPosition[] | null
-  };
-  private player2: {
-    user: User,
-    shipsPosition: IShipPosition[] | null
-  };
-  private isReady: boolean = false;
-  private turn: number;
+  private _id: number;
+  private players: IGamePlayers[];
+  private _isReady: boolean = false;
+  private _turn: 0 | 1;
 
-  constructor(room: Room) {
+  constructor(players: IGamePlayers[]) {
     this.id = allowId;
     allowId++;
-    this.player1 = {
-      user: room.getPlayer1() as User,
-      shipsPosition: null
-    };
-    this.player2 = {
-      user: room.getPlayer2() as User,
-      shipsPosition: null
-    };
-    this.turn = this.getPlayer1().user.getId();
+    this.players = players;
+    this.turn = getRandomTurn();
   };
 
-  public getPlayer1 = () => this.player1;
+  public get id() {
+    return this._id;
+  };
 
-  public getPlayer2 = () => this.player2;
+  private set id(value: number) {
+    this._id = value;
+  };
 
-  public getPlayerById = (id: number) => this.player1.user.getId() === id ? this.player1 : this.player2
+  public get turn() {
+    return this._turn;
+  };
 
-  public getId = () => this.id;
+  private set turn(value: 0 | 1) {
+    this._turn = value;
+  };
 
-  public checkIsReady = () => {
-    if (this.player1.shipsPosition && this.player2.shipsPosition) {
+  public get isReady() {
+    return this._isReady;
+  };
+
+  private set isReady(value: boolean) {
+    this._isReady = value;
+  };
+
+  public changeTurnToNext = () => {
+    if (this.turn === 0) {
+      this.turn = 1;
+    } else {
+      this.turn = 0;
+    }
+  };
+
+  public getPlayerById = (playerId: 0 | 1) => this.players[playerId];
+
+  public setPlayerShips = (playerId: 0 | 1, ships: Ship[]) => {
+    this.players[playerId].ships = ships;
+
+    if (this.players.every((player) => player.ships)) {
       this.isReady = true;
     };
-
-    return this.isReady
   };
 
-  public getNextTurn = () => {
-    return this.turn;
-  }
+  public getPlayers = () => {
+    return this.players;
+  };
 
-  public getIsReady = () => this.isReady;
-
-  public setReady = () => this.isReady = true;
-
-  public setPlayer1ShipsPosition = (positions: IShipPosition[]) => this.player1.shipsPosition = positions;
-
-  public setPlayer2ShipsPosition = (positions: IShipPosition[]) => this.player2.shipsPosition = positions;
-}
+};

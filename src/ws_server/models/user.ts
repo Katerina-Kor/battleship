@@ -3,12 +3,12 @@ import { WebSocket } from "ws";
 let allowId: number = 0;
 
 export class User {
-  private username: string;
-  private id: number;
-  private password: string;
-  private winsQuantity: number = 0;
-  private isActive: boolean = true;
-  private socket: WebSocket | null = null;
+  private _username: string;
+  private _id: number;
+  private _password: string;
+  private _winsQuantity: number = 0;
+  private _isActive: boolean = true;
+  private _socket: WebSocket | null = null;
 
   constructor(username: string, password: string, socket: WebSocket) {
     this.username = username;
@@ -18,21 +18,59 @@ export class User {
     this.socket = socket;
   };
 
-  public getUsername = () => this.username;
+  public get username() {
+    return this._username;
+  };
 
-  public getId = () => this.id;
+  private set username(value: string) {
+    this._username = value;
+  };
 
-  public getSocket = () => this.socket;
+  private set password(value: string) {
+    this._password = value;
+  };
 
-  public setActive = () => this.isActive = true;
+  public get id() {
+    return this._id;
+  };
 
-  public setInactive = () => this.isActive = false;
+  private set id(value: number) {
+    this._id = value;
+  };
 
-  public setSocket = (socket: WebSocket) => this.socket = socket; 
+  public get socket(): WebSocket | null {
+    return this._socket;
+  };
 
-  public getWinsQuantity = () => this.winsQuantity;
+  public set socket(value: WebSocket) {
+    this._socket = value;
+  };
 
-  public increaseWinsQuantity = () => this.winsQuantity++;
+  public get winsQuantity() {
+    return this._winsQuantity;
+  };
 
-  public getIsActive = () => this.isActive;
+  private set winsQuantity(value: number) {
+    this._winsQuantity = value;
+  };
+
+  public get isActive() {
+    return this._isActive;
+  };
+
+  private set isActive(value: boolean) {
+    this._isActive = value;
+  };
+
+  public setActive = () => {
+    this.isActive = true;
+  };
+
+  public setInactive = () => {
+    this.isActive = false;
+  };
+
+  public increaseWinsQuantity = () => {
+    this.winsQuantity++;
+  };
 }

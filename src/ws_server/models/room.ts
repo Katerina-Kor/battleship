@@ -1,29 +1,46 @@
-import { WebSocket } from "ws";
 import { User } from "./user";
 
 let allowId: number = 0;
 
 export class Room {
-  private id: number;
-  private player1: User | null = null;
-  private player2: User | null = null;
-  private isAvailable: boolean = true;
+  private _id: number;
+  private _players: User[];
+  private _isAvailable: boolean = true;
 
-  constructor(player: User) {
+  constructor() {
     this.id = allowId;
     allowId++;
-    this.player1 = player;
   };
 
-  public getPlayer1 = () => this.player1;
+  public get id() {
+    return this._id;
+  };
 
-  public getPlayer2 = () => this.player2;
+  private set id(value: number) {
+    this._id = value;
+  };
 
-  public getId = () => this.id;
+  public get isAvailable() {
+    return this._isAvailable;
+  };
 
-  public setUnavailable = () => this.isAvailable = false;
+  private set isAvailable(value: boolean) {
+    this._isAvailable = value;
+  };
 
-  public setPlayer2 = (player: User) => this.player2 = player;
+  public setUnavailable = () => {
+    this.isAvailable = false;
+  };
 
-  public getIsAvailable = () => this.isAvailable;
+  public isReady = () => {
+    return this._players.length === 2;
+  };
+
+  public addPlayer = (player: User) => {
+    this._players.push(player);
+  };
+
+  public getPlayers = () => {
+    return this._players;
+  };
 }

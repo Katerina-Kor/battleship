@@ -1,6 +1,8 @@
-import { WebSocket } from "ws";
+import { Ship } from "../models/ship";
+import { User } from "../models/user";
 
-export enum ResponseType {
+
+export enum MessageType {
   REG = 'reg',
   CREATE_GAME = 'create_game',
   START_GAME = 'start_game',
@@ -14,19 +16,20 @@ export enum ResponseType {
   ADD_SHIPS = 'add_ships'
 };
 
-export interface IUserDB {
-  username: string;
-  password: string,
-  id: number,
-  ws: WebSocket
+export interface ICeilPosition {
+  x: number;
+  y: number;
 };
 
 export interface IShipPosition {
-  position: {
-    x: number,
-    y: number
-  },
+  position: ICeilPosition,
   direction: boolean,
   type: 'small' | 'medium' | 'large' | 'huge',
   length: number
+};
+
+export interface IGamePlayers {
+  user: User;
+  ships: Ship[] | null;
+  playerId: 0 | 1;
 }
