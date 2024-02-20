@@ -38,6 +38,7 @@ export interface IShipData {
 export interface IGamePlayers {
   user: User;
   ships: Ship[] | null;
+  shipsData: IShipData[] | null,
   playerId: 0 | 1;
 };
 

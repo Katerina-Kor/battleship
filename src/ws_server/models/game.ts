@@ -63,4 +63,8 @@ export class Game {
     return this.players;
   };
 
+  public getPlayerShipsData = (playerId: 0  | 1) => {
+    return this.players[playerId].shipsData;
+  }
+
 };

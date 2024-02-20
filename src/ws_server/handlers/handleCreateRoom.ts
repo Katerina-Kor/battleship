@@ -1,6 +1,6 @@
 import { WebSocket } from "ws";
 import { usersController } from "../controllers/usersController";
-import { IClientRegData, IServerUpdateRoomData, MessageType } from "../types";
+import { IServerUpdateRoomData, MessageType } from "../types";
 import { prepareServerMessage } from "../utils";
 import { Room } from "../models/room";
 import { database } from "../database/database";
