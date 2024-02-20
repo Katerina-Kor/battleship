@@ -1,4 +1,4 @@
-import { ICeilPosition, IShipPosition } from "../types";
+import { ICeilPosition, IShipData } from "../types";
 
 
 export class Ship {
@@ -7,7 +7,7 @@ export class Ship {
   private length: number;
   private isAlive: boolean = true;
 
-  constructor(shipData: IShipPosition) {
+  constructor(shipData: IShipData) {
     this.type = shipData.type;
     this.positions = this.computeShipPositions(shipData.position, shipData.direction, shipData.length);
     this.length = shipData.length
