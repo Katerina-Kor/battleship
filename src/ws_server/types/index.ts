@@ -212,7 +212,7 @@ export type ServerMessageData =
   IServerRegData |
   IServerUpdateWinnersData |
   IServerCreateGameData |
-  IServerUpdateRoomData |
+  IServerUpdateRoomData[] |
   IServerStartGameData | 
   IServerAttackData |
   IServerTurnData |

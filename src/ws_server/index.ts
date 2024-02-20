@@ -7,7 +7,8 @@ import { usersController } from './controllers/usersController.js';
 import { Game } from './models/game.js';
 import { Ship } from './models/ship.js';
 import { handleRegistration } from './handlers/handleRegistration.js';
-import { parseClientMessage } from './utils'
+import { parseClientMessage } from './utils';
+import { handleCreateRoom } from './handlers/handleCreateRoom.js';
 
 const wss = new WebSocketServer({
   port: 3000,
@@ -26,34 +27,7 @@ wss.on('connection', (ws: WebSocket) => {
     };
 
     if (type === MessageType.CREATE_ROOM) {
-      const currentUser = usersController.getUserBySocket(ws);
-      // TODO: create rooms controller
-      const newRoom = new Room();
-      newRoom.addPlayer(currentUser);
-      database.rooms.push(newRoom);
-
-      const data = database.rooms.map(room => {
-        return {
-          roomId: room.id,
-          roomUsers: [
-            {
-              name: currentUser.username,
-              index: currentUser.id
-            }
-          ]
-        }
-      })
-      console.log('DATA', typeof data, data)
-
-      wss.clients.forEach(client => {
-        if (client.readyState === WebSocket.OPEN) {
-          client.send(JSON.stringify({
-            type: MessageType.UPDATE_ROOM,
-            data: JSON.stringify(data),
-            id: 0
-          }))
-        }
-      })
+      handleCreateRoom(ws);
     };
 
     if (type === MessageType.ADD_USER_TO_ROOM) {

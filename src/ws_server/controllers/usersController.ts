@@ -17,6 +17,10 @@ class UsersController {
 
   public getUserBySocket = (socket: WebSocket) => {
     return this.users.find((user) => user.socket === socket) as User;
+  };
+
+  public getAllActiveUsers = () => {
+    return this.users.filter((user) => user.isActive)
   }
 }
 
