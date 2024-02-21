@@ -9,6 +9,7 @@ import {
   handleAttack,
   handleRandomAttack
 } from './handlers';
+import { usersController } from './controllers/usersController.js';
 
 const wss = new WebSocketServer({
   port: 3000,
@@ -49,7 +50,8 @@ wss.on('connection', (ws: WebSocket) => {
   });
 
   ws.on("close", () => {
-    console.log("Client disconnected")
+    console.log("Client disconnected");
+    usersController.setUserInactive(ws);
   })
 });
 

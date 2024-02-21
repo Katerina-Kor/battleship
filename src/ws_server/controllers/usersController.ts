@@ -21,6 +21,12 @@ class UsersController {
 
   public getAllActiveUsers = () => {
     return this.users.filter((user) => user.isActive)
+  };
+
+  public setUserInactive = (socket: WebSocket) => {
+    const user = this.getUserBySocket(socket);
+    user.setInactive();
+    user.socket = null;
   }
 }
 

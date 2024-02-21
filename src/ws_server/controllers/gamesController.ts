@@ -92,6 +92,10 @@ class GamesController {
       };
     } else {
       const isWin = this.checkIsWin(enemyPlayer.ships as Ship[]);
+      if (isWin) {
+        const currentPlayer = currentGame.getPlayerById(playerId);;
+        currentPlayer.user.increaseWinsQuantity();
+      }
       return {
         status: ShipStatus.KILLED,
         neighboringCells: ship.getShipNeighboringCells(),

@@ -42,7 +42,7 @@ export class User {
     return this._socket;
   };
 
-  public set socket(value: WebSocket) {
+  public set socket(value: WebSocket | null) {
     this._socket = value;
   };
 
