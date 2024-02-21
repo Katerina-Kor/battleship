@@ -30,7 +30,8 @@ export interface ICeilPosition {
 
 export interface IShotResult {
   status: ShipStatus,
-  neighboringCells: ICeilPosition[] | null
+  neighboringCells: ICeilPosition[] | null,
+  isWin: boolean;
 };
 
 export interface IShipData {

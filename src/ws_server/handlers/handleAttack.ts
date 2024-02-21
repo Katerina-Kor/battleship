@@ -35,7 +35,6 @@ export const handleAttack = (
   });
 
   if (shotResult.neighboringCells) {
-    console.log('neighboring', shotResult.neighboringCells)
     shotResult.neighboringCells.forEach((cell) => {
       const isNewShot = gamesController.addPlayerShot(currentGame, indexPlayer as 0 | 1, cell.x, cell.y);
       if (!isNewShot) return;
@@ -56,12 +55,24 @@ export const handleAttack = (
     })
   }
 
-  playersInGame.forEach(({user}) => {
-    if (user.socket && user.socket.readyState === WebSocket.OPEN) {
-      const turnData = {
-        currentPlayer: currentGame.turn,
+  if (shotResult.isWin) {
+    playersInGame.forEach(({user}) => {
+      if (user.socket && user.socket.readyState === WebSocket.OPEN) {
+        const data = {
+          winPlayer: indexPlayer,
+        }
+        user.socket.send(prepareServerMessage(MessageType.FINISH, data));
       }
-      user.socket.send(prepareServerMessage(MessageType.TURN, turnData));
-    }
-  });
+    });
+  } else {
+    playersInGame.forEach(({user}) => {
+      if (user.socket && user.socket.readyState === WebSocket.OPEN) {
+        const turnData = {
+          currentPlayer: currentGame.turn,
+        }
+        user.socket.send(prepareServerMessage(MessageType.TURN, turnData));
+      }
+    });
+  }
+
 }

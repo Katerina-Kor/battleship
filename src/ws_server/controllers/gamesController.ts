@@ -76,7 +76,8 @@ class GamesController {
       currentGame.changeTurnToNext();
       return {
         status: ShipStatus.MISS,
-        neighboringCells: null
+        neighboringCells: null,
+        isWin: false,
       };
     }
 
@@ -86,12 +87,15 @@ class GamesController {
     if (shipHealth) {
       return {
         status: ShipStatus.SHOT,
-        neighboringCells: null
+        neighboringCells: null,
+        isWin: false,
       };
     } else {
+      const isWin = this.checkIsWin(enemyPlayer.ships as Ship[]);
       return {
         status: ShipStatus.KILLED,
-        neighboringCells: ship.getShipNeighboringCells()
+        neighboringCells: ship.getShipNeighboringCells(),
+        isWin
       };
     }
   };
@@ -102,11 +106,15 @@ class GamesController {
 
     const leftCells = currentPlayer.enemyGameField.filter((cell) => cell.touched === false);
     const randomCellIndex = Math.round(Math.random() * leftCells.length - 1);
-    const cell = currentPlayer.enemyGameField[randomCellIndex];
+    const cell = leftCells[randomCellIndex];
     return {
       x: cell.x,
       y: cell.y
     }
+  };
+
+  private checkIsWin = (ships: Ship[]) => {
+    return ships.every((ship) => ship.getIsAlive() === false)
   }
 }
 
