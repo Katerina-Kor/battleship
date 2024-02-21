@@ -4,7 +4,7 @@ let allowId: number = 0;
 
 export class Room {
   private _id: number;
-  private _players: User[];
+  private _players: User[] = [];
   private _isAvailable: boolean = true;
 
   constructor() {

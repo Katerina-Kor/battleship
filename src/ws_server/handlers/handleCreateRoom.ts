@@ -1,28 +1,18 @@
 import { WebSocket } from "ws";
 import { usersController } from "../controllers/usersController";
-import { IServerUpdateRoomData, MessageType } from "../types";
+import { roomsController } from '../controllers/roomsController';
+import { MessageType } from "../types";
 import { prepareServerMessage } from "../utils";
-import { Room } from "../models/room";
-import { database } from "../database/database";
 
 export const handleCreateRoom = (
   socket: WebSocket
 ) => {
   const currentUser = usersController.getUserBySocket(socket);
-  // TODO: create rooms controller
-  const newRoom = new Room();
-  newRoom.addPlayer(currentUser);
-  database.rooms.push(newRoom);
 
-  const data: IServerUpdateRoomData[] = database.rooms.map(room => {
-    return {
-      roomId: room.id,
-      roomUsers: room.getPlayers().map(player => ({
-        name: player.username,
-        index: player.id
-      }))
-    }
-  })
+  const createdRoom = roomsController.createRoom();
+  roomsController.addUserToRoom(createdRoom, currentUser);
+
+  const data = roomsController.getRoomsData();
   console.log('DATA', typeof data, data);
 
   const activeUsers = usersController.getAllActiveUsers();
