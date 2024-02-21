@@ -28,6 +28,11 @@ export interface ICeilPosition {
   y: number;
 };
 
+export interface IShotResult {
+  status: ShipStatus,
+  neighboringCells: ICeilPosition[] | null
+};
+
 export interface IShipData {
   position: ICeilPosition,
   direction: boolean,

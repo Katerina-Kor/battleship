@@ -20,7 +20,7 @@ export const prepareServerMessage = (type: MessageType, data: ServerMessageData)
     data: JSON.stringify(data),
     id: 0
   });
-  console.log('SERVER MESSAGE: ', message);
+  // console.log('SERVER MESSAGE: ', message);
   return message;
 };
 

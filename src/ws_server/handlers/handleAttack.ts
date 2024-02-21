@@ -1,11 +1,10 @@
 import { WebSocket } from "ws";
-import { IClientAttackData, MessageType } from "../types";
+import { IClientAttackData, MessageType, ShipStatus } from "../types";
 import { prepareServerMessage } from "../utils";
 import { gamesController } from "../controllers/gamesController";
 
 export const handleAttack = (
   messageData: IClientAttackData,
-  socket: WebSocket
 ) => {
   console.log('ATTACK DATA', messageData);
 
@@ -29,12 +28,39 @@ export const handleAttack = (
           y
         },
         currentPlayer: indexPlayer,
-        status: shotResult
+        status: shotResult.status
       };
+      user.socket.send(prepareServerMessage(MessageType.ATTACK, data));
+    }
+  });
+
+  if (shotResult.neighboringCells) {
+    console.log('neighboring', shotResult.neighboringCells)
+    shotResult.neighboringCells.forEach((cell) => {
+      const isNewShot = gamesController.addPlayerShot(currentGame, indexPlayer as 0 | 1, cell.x, cell.y);
+      if (!isNewShot) return;
+
+      playersInGame.forEach(({user}) => {
+        if (user.socket && user.socket.readyState === WebSocket.OPEN) {
+          const data = {
+            position: {
+              x: cell.x,
+              y: cell.y
+            },
+            currentPlayer: indexPlayer,
+            status: ShipStatus.MISS
+          };
+          user.socket.send(prepareServerMessage(MessageType.ATTACK, data));
+        }
+      });
+    })
+  }
+
+  playersInGame.forEach(({user}) => {
+    if (user.socket && user.socket.readyState === WebSocket.OPEN) {
       const turnData = {
         currentPlayer: currentGame.turn,
       }
-      user.socket.send(prepareServerMessage(MessageType.ATTACK, data));
       user.socket.send(prepareServerMessage(MessageType.TURN, turnData));
     }
   });

@@ -2,7 +2,7 @@ import { database } from "../database/database";
 import { Game } from "../models/game";
 import { Ship } from "../models/ship";
 import { User } from "../models/user";
-import { IGamePlayer, IServerUpdateRoomData, IShipData, ShipStatus } from "../types";
+import { ICeilPosition, IGamePlayer, IServerUpdateRoomData, IShipData, IShotResult, ShipStatus } from "../types";
 import { getEmptyGameField } from "../utils";
 
 class GamesController {
@@ -51,6 +51,7 @@ class GamesController {
     const currentGame = typeof gameData === 'number' ? this.getGameById(gameData) : gameData;
     const currentPlayer = currentGame.getPlayerById(playerId);
     const index = (x * 10) + y;
+
     const ceil = currentPlayer.enemyGameField[index];
     if (ceil.touched) {
       return false;
@@ -60,7 +61,7 @@ class GamesController {
     }
   };
 
-  public getShotResult = (gameData: number | Game, playerId: 0 | 1, x: number, y: number) => {
+  public getShotResult = (gameData: number | Game, playerId: 0 | 1, x: number, y: number): IShotResult => {
     const currentGame = typeof gameData === 'number' ? this.getGameById(gameData) : gameData;
     const enemyId = playerId === 0 ? 1 : 0;
     const enemyPlayer = currentGame.getPlayerById(enemyId);
@@ -73,13 +74,39 @@ class GamesController {
 
     if (!ship) {
       currentGame.changeTurnToNext();
-      return ShipStatus.MISS;
+      return {
+        status: ShipStatus.MISS,
+        neighboringCells: null
+      };
     }
 
     ship.decreaseLength();
     const shipHealth = ship.getIsAlive();
 
-    return shipHealth ? ShipStatus.SHOT : ShipStatus.KILLED;
+    if (shipHealth) {
+      return {
+        status: ShipStatus.SHOT,
+        neighboringCells: null
+      };
+    } else {
+      return {
+        status: ShipStatus.KILLED,
+        neighboringCells: ship.getShipNeighboringCells()
+      };
+    }
+  };
+
+  public getRandomShot = (gameData: number | Game, playerId: 0 | 1): ICeilPosition => {
+    const currentGame = typeof gameData === 'number' ? this.getGameById(gameData) : gameData;
+    const currentPlayer = currentGame.getPlayerById(playerId);
+
+    const leftCells = currentPlayer.enemyGameField.filter((cell) => cell.touched === false);
+    const randomCellIndex = Math.round(Math.random() * leftCells.length - 1);
+    const cell = currentPlayer.enemyGameField[randomCellIndex];
+    return {
+      x: cell.x,
+      y: cell.y
+    }
   }
 }
 

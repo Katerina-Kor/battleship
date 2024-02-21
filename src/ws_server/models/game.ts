@@ -71,6 +71,6 @@ export class Game {
 
   public getPlayerShipsData = (playerId: 0  | 1) => {
     return this.players[playerId].shipsData;
-  }
+  };
 
 };

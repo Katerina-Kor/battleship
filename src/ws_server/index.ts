@@ -39,11 +39,11 @@ wss.on('connection', (ws: WebSocket) => {
     };
 
     if (type === MessageType.ATTACK) {
-      handleAttack(msgData, ws);
+      handleAttack(msgData);
     };
 
     if (type === MessageType.RANDOM_ATTACK) {
-      handleRandomAttack(msgData, ws);
+      handleRandomAttack(msgData);
     };
     
   });
