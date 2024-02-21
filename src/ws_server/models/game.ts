@@ -1,16 +1,16 @@
 import { Ship } from './ship';
-import { IGamePlayers } from "../types";
+import { IGamePlayer, IShipData } from "../types";
 import { getRandomTurn } from "../utils";
 
 let allowId: number = 0;
 
 export class Game {
   private _id: number;
-  private players: IGamePlayers[];
+  private players: IGamePlayer[];
   private _isReady: boolean = false;
   private _turn: 0 | 1;
 
-  constructor(players: IGamePlayers[]) {
+  constructor(players: IGamePlayer[]) {
     this.id = allowId;
     allowId++;
     this.players = players;
@@ -51,8 +51,14 @@ export class Game {
 
   public getPlayerById = (playerId: 0 | 1) => this.players[playerId];
 
-  public setPlayerShips = (playerId: 0 | 1, ships: Ship[]) => {
+  public setPlayerShips = (playerId: 0 | 1, shipsData: IShipData[]) => {
+    const ships: Ship[] = [];
+    shipsData.forEach((ship: IShipData) => {
+      const shipInstance = new Ship(ship);
+      ships.push(shipInstance);
+    })
     this.players[playerId].ships = ships;
+    this.players[playerId].shipsData = shipsData;
 
     if (this.players.every((player) => player.ships)) {
       this.isReady = true;

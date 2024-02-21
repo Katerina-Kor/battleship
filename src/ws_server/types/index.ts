@@ -35,11 +35,18 @@ export interface IShipData {
   length: number
 };
 
-export interface IGamePlayers {
+export interface IGamePlayer {
   user: User;
   ships: Ship[] | null;
   shipsData: IShipData[] | null,
   playerId: 0 | 1;
+  enemyGameField: IGameCeil[]
+};
+
+export interface IGameCeil {
+  x: number,
+  y: number,
+  touched: boolean
 };
 
 

@@ -1,4 +1,4 @@
-import { ClientMessage, MessageType, ServerMessageData } from "../types";
+import { ClientMessage, IGameCeil, MessageType, ServerMessageData } from "../types";
 
 export const parseClientMessage = (message: string) => {
   const resMessage = JSON.parse(message);
@@ -15,9 +15,32 @@ export const getRandomTurn = () => {
 };
 
 export const prepareServerMessage = (type: MessageType, data: ServerMessageData) => {
-  return JSON.stringify({
+  const message =  JSON.stringify({
     type,
     data: JSON.stringify(data),
     id: 0
   });
+  console.log('SERVER MESSAGE: ', message);
+  return message;
+};
+
+export const getEmptyGameField = () => {
+  const ceils: IGameCeil[] = [];
+
+  for (let i = 0; i < 10; i++) {
+    for (let j = 0; j < 10; j++) {
+      ceils.push({
+        x: i,
+        y: j,
+        touched: false
+      })
+    }
+  }
+
+  return ceils;
+
+  // console.log(ceils);
+
+  // const freeCeils = ceils.filter((ceil) => ceil.touched === false);
+  // console.log(freeCeils.length);
 }

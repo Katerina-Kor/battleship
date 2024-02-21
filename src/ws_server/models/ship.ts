@@ -21,6 +21,13 @@ export class Ship {
 
   public getIsAlive = () => this.isAlive
 
+  public decreaseLength = () => {
+    this.length = this.length - 1;
+    if (this.length === 0) {
+      this.isAlive = false;
+    }
+  }
+
   private computeShipPositions(startPosition: ICeilPosition, direction: boolean, length: number) {
     const res: ICeilPosition[] = [];
     res.push(startPosition);

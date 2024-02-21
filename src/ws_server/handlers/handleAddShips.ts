@@ -1,34 +1,19 @@
 import { WebSocket } from "ws";
 import { IClientAddShipsData, IShipData, MessageType } from "../types";
 import { prepareServerMessage } from "../utils";
-import { database } from "../database/database";
-import { Game } from "../models/game";
-import { Ship } from "../models/ship";
+import { gamesController } from '../controllers/gamesController';
 
 export const handleAddShips = (
   messageData: IClientAddShipsData,
   socket: WebSocket
 ) => {
-  const ships: Ship[] = [];
-    
-  messageData.ships.forEach((ship: IShipData) => {
-    console.log(ship.position, ship.direction, ship.type, ship.length);
+  const { gameId, ships, indexPlayer } = messageData;
+  const currentGame = gamesController.getGameById(gameId);
+  gamesController.addPlayerShips(currentGame, indexPlayer as 0 | 1, ships);
 
-    const shipInstance = new Ship(ship);
-    ships.push(shipInstance);
-  })
+  if (gamesController.checkGameIsReady(currentGame)) {
+    const playersInGame = gamesController.getPlayersInGame(currentGame);
 
-  ships.forEach(ship => console.log('SHIPDATA', ship.getType(), ship.getPositions(), ship.getLength(), ship.getIsAlive()))
-
-  const gameId = messageData.gameId;
-  const currentGame = database.games.find((game) => game.id === gameId) as Game;
-
-  const indexPlayer = messageData.indexPlayer as 0 | 1;
-  const currentPlayer = currentGame.getPlayerById(indexPlayer);
-  currentPlayer.ships = ships;
-
-  if (currentGame.isReady) {
-    const playersInGame = currentGame.getPlayers();
     playersInGame.forEach(({user, playerId, shipsData}) => {
       if (user.socket && user.socket.readyState === WebSocket.OPEN) {
         const data = {
