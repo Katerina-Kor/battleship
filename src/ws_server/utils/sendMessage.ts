@@ -1,5 +1,5 @@
 import { WebSocket } from "ws";
-import { IServerCreateGameData, IServerRegData, IServerStartGameData, IServerTurnData, IServerUpdateRoomData, IServerUpdateWinnersData, MessageType, ServerMessageData } from '../types';
+import { IServerAttackData, IServerCreateGameData, IServerFinishData, IServerRegData, IServerStartGameData, IServerTurnData, IServerUpdateRoomData, IServerUpdateWinnersData, MessageType, ServerMessageData } from '../types';
 
 export const prepareServerMessage = (type: MessageType, data: ServerMessageData) => {
   const message =  JSON.stringify({
@@ -32,4 +32,12 @@ export const sendStartGameMessage = (client: WebSocket, data: IServerStartGameDa
 
 export const sendTurnMessage = (client: WebSocket, data: IServerTurnData) => {
   client.send(prepareServerMessage(MessageType.TURN, data));
+};
+
+export const sendAttackMessage = (client: WebSocket, data: IServerAttackData) => {
+  client.send(prepareServerMessage(MessageType.ATTACK, data));
+};
+
+export const sendFinishMessage = (client: WebSocket, data: IServerFinishData) => {
+  client.send(prepareServerMessage(MessageType.FINISH, data));
 };
