@@ -1,43 +1,71 @@
 import { WebSocket } from "ws";
 import { usersController } from "../controllers/usersController";
-import { IClientRegData, MessageType } from "../types";
-import { prepareServerMessage } from "../utils";
+import { IClientRegData } from "../types";
+import { sendRegMessage, sendUpdateRoomMessage, sendUpdateWinnersMessage } from '../utils/sendMessage';
+import { roomsController } from "../controllers/roomsController";
 
 export const handleRegistration = (
   messageData: IClientRegData,
   socket: WebSocket
 ) => {
-  const user = usersController.getUserByUsername(messageData.name);
+  const { name, password } = messageData;
+  const user = usersController.getUserByUsername(name);
 
   if (user) {
+    // user is in game already
     if (user.isActive) {
-      const data = {
+      const regData = {
         name: user.username,
         index: user.id,
         error: true,
         errorText: 'User already has active connection'
       };
-      socket.send(prepareServerMessage(MessageType.REG, data));
+      sendRegMessage(socket, regData);
     } else {
-      // TODO: add password validation
+      // user send wrong password
+      if (!usersController.checkUserPassword(user, password)) {
+        const regData = {
+          name: user.username,
+          index: user.id,
+          error: true,
+          errorText: 'Wrong password'
+        };
+        sendRegMessage(socket, regData);
+        return;
+      }
+
+      // user enter the game second time
       user.setActive();
       user.socket = socket;
-      const data = {
+      const regData = {
         name: user.username,
         index: user.id,
         error: false,
         errorText: ''
       };
-      socket.send(prepareServerMessage(MessageType.REG, data));
+      sendRegMessage(socket, regData);
+
+      const winnersData = usersController.getWinnersList();
+      sendUpdateWinnersMessage(socket, winnersData);
+
+      const roomsData = roomsController.getRoomsData();
+      sendUpdateRoomMessage(socket, roomsData);
     }
   } else {
-    const newUser = usersController.createNewUser(messageData.name, messageData.password, socket);
-    const data = {
+    // new user
+    const newUser = usersController.createNewUser(name, password, socket);
+    const regData = {
       name: newUser.username,
       index: newUser.id,
       error: false,
       errorText: ''
     };
-    socket.send(prepareServerMessage(MessageType.REG, data));
+    sendRegMessage(socket, regData);
+
+    const winnersData = usersController.getWinnersList();
+    sendUpdateWinnersMessage(socket, winnersData);
+
+    const roomsData = roomsController.getRoomsData();
+    sendUpdateRoomMessage(socket, roomsData);
   }
 }

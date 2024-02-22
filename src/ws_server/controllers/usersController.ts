@@ -1,6 +1,7 @@
 import { WebSocket } from "ws";
 import { User } from "../models/user"
 import { database } from "../database/database";
+import { IServerUpdateWinnersData } from "../types";
 
 class UsersController {
   private users: User[] = database.users;
@@ -27,6 +28,19 @@ class UsersController {
     const user = this.getUserBySocket(socket);
     user.setInactive();
     user.socket = null;
+  };
+
+  public checkUserPassword = (user: User, password: string) => {
+    return user.password === password;
+  };
+
+  public getWinnersList = (): IServerUpdateWinnersData[] => {
+    return this.users
+      .filter((user) => user.winsQuantity > 0)
+      .map((user) => ({
+        name: user.username,
+        wins: user.winsQuantity
+      }));
   }
 }
 

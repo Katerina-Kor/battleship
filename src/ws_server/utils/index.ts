@@ -20,7 +20,6 @@ export const prepareServerMessage = (type: MessageType, data: ServerMessageData)
     data: JSON.stringify(data),
     id: 0
   });
-  // console.log('SERVER MESSAGE: ', message);
   return message;
 };
 
@@ -38,9 +37,4 @@ export const getEmptyGameField = () => {
   }
 
   return ceils;
-
-  // console.log(ceils);
-
-  // const freeCeils = ceils.filter((ceil) => ceil.touched === false);
-  // console.log(freeCeils.length);
-}
+};

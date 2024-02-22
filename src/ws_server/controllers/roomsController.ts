@@ -45,7 +45,9 @@ class RoomsController {
   }
 
   public getRoomsData = () => {
-    const data: IServerUpdateRoomData[] = this.rooms.map(room => {
+    const data: IServerUpdateRoomData[] = this.rooms
+      .filter(room => room.isAvailable)
+      .map(room => {
       return {
         roomId: room.id,
         roomUsers: room.getPlayers().map(player => ({

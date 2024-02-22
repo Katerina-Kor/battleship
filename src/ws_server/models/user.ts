@@ -26,6 +26,10 @@ export class User {
     this._username = value;
   };
 
+  public get password() {
+    return this._password;
+  };
+
   private set password(value: string) {
     this._password = value;
   };

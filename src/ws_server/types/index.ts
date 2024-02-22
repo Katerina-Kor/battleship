@@ -224,7 +224,7 @@ export interface IServerFinishMessage {
 
 export type ServerMessageData =
   IServerRegData |
-  IServerUpdateWinnersData |
+  IServerUpdateWinnersData[] |
   IServerCreateGameData |
   IServerUpdateRoomData[] |
   IServerStartGameData | 
