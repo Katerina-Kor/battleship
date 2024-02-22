@@ -23,6 +23,7 @@ export const handleAddUserToRoom = (
 
     if (usersInRoom.length === 2) {
       roomsController.closeRoom(currentRoom);
+      roomsController.clearRoomsFromUser(currentUser);
 
       const activeUsers = usersController.getAllActiveUsers();
       const roomsData = roomsController.getRoomsData();
