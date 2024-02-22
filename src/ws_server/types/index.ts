@@ -86,7 +86,7 @@ export interface IClientAddUserToRoomMessage {
 export interface IClientAddShipsData {
   gameId: number,
   ships: IShipData[],
-  indexPlayer: number,
+  indexPlayer: 0 | 1,
 };
 
 export interface IClientAddShipsMessage {
@@ -99,7 +99,7 @@ export interface IClientAttackData {
   gameId: number,
   x: number,
   y: number,
-  indexPlayer: number,
+  indexPlayer: 0 | 1,
 };
 
 export interface IClientAttackMessage {
@@ -110,7 +110,7 @@ export interface IClientAttackMessage {
 
 export interface IClientRandomAttackData {
   gameId: number,
-  indexPlayer: number,
+  indexPlayer: 0 | 1,
 };
 
 export interface IClientRandomAttackMessage {

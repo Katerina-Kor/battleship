@@ -66,8 +66,9 @@ export class User {
     this._isActive = value;
   };
 
-  public setActive = () => {
+  public setActive = (socket: WebSocket) => {
     this.isActive = true;
+    this.socket = socket;
   };
 
   public setInactive = () => {

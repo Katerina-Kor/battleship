@@ -36,7 +36,7 @@ wss.on('connection', (ws: WebSocket) => {
     };
 
     if (type === MessageType.ADD_SHIPS) {
-      handleAddShips(msgData, ws);
+      handleAddShips(msgData);
     };
 
     if (type === MessageType.ATTACK) {

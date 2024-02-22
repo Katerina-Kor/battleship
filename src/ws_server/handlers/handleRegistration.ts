@@ -35,8 +35,7 @@ export const handleRegistration = (
       }
 
       // user enter the game second time
-      user.setActive();
-      user.socket = socket;
+      user.setActive(socket);
       const regData = {
         name: user.username,
         index: user.id,

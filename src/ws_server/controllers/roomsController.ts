@@ -21,8 +21,13 @@ class RoomsController {
     }
   };
 
-  public checkUserAlreadyInRoom = (user: User) => {
-    const roomWithUser = this.rooms.find(room => room.isUserInRoom(user));
+  public checkUserAlreadyInRoom = (user: User, particularRoom?: Room) => {
+    let roomWithUser;
+    if (particularRoom) {
+      roomWithUser = particularRoom.isUserInRoom(user);
+    } else {
+      roomWithUser = this.rooms.find(room => room.isUserInRoom(user));
+    };
     return roomWithUser ? true : false;
   }
 

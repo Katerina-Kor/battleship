@@ -17,7 +17,7 @@ class UsersController {
   };
 
   public getUserBySocket = (socket: WebSocket) => {
-    return this.users.find((user) => user.socket === socket) as User;
+    return this.users.find((user) => user.socket === socket);
   };
 
   public getAllActiveUsers = () => {
@@ -26,8 +26,10 @@ class UsersController {
 
   public setUserInactive = (socket: WebSocket) => {
     const user = this.getUserBySocket(socket);
-    user.setInactive();
-    user.socket = null;
+    if (user) {
+      user.setInactive();
+      user.socket = null;
+    }
   };
 
   public checkUserPassword = (user: User, password: string) => {

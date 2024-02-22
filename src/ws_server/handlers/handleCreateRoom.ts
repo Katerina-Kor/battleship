@@ -8,18 +8,20 @@ export const handleCreateRoom = (
 ) => {
   const currentUser = usersController.getUserBySocket(socket);
 
-  if (roomsController.checkUserAlreadyInRoom(currentUser)) return;
+  if (currentUser) {
+    if (roomsController.checkUserAlreadyInRoom(currentUser)) return;
 
-  const createdRoom = roomsController.createRoom();
-  roomsController.addUserToRoom(createdRoom, currentUser);
+    const createdRoom = roomsController.createRoom();
+    roomsController.addUserToRoom(createdRoom, currentUser);
 
-  const roomsData = roomsController.getRoomsData();
+    const roomsData = roomsController.getRoomsData();
 
-  const activeUsers = usersController.getAllActiveUsers();
+    const activeUsers = usersController.getAllActiveUsers();
 
-  activeUsers.forEach(({ socket }) => {
-    if (socket && socket.readyState === WebSocket.OPEN) {
-      sendUpdateRoomMessage(socket, roomsData);
-    };
-  });
+    activeUsers.forEach(({ socket }) => {
+      if (socket && socket.readyState === WebSocket.OPEN) {
+        sendUpdateRoomMessage(socket, roomsData);
+      };
+    });
+  }
 };
