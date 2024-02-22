@@ -19,8 +19,12 @@ class RoomsController {
     } else {
       roomData.addPlayer(user);
     }
-    
   };
+
+  public checkUserAlreadyInRoom = (user: User) => {
+    const roomWithUser = this.rooms.find(room => room.isUserInRoom(user));
+    return roomWithUser ? true : false;
+  }
 
   public closeRoom = (roomData: number | Room) => {
     if (typeof roomData === 'number') {
