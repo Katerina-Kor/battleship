@@ -4,6 +4,7 @@ import { prepareServerMessage } from "../utils";
 import { gamesController } from "../controllers/gamesController";
 import { sendAttackMessage, sendTurnMessage, sendUpdateWinnersMessage } from "../utils/sendMessage";
 import { usersController } from "../controllers/usersController";
+import { roomsController } from "../controllers/roomsController";
 
 export const handleAttack = (
   messageData: IClientAttackData,
@@ -53,6 +54,7 @@ export const handleAttack = (
         user.socket.send(prepareServerMessage(MessageType.FINISH, data));
       }
     });
+
     const activeUsers = usersController.getAllActiveUsers();
     const winnersData = usersController.getWinnersList();
     activeUsers.forEach(({ socket }) => {

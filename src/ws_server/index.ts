@@ -7,9 +7,9 @@ import {
   handleAddUserToRoom,
   handleAddShips,
   handleAttack,
-  handleRandomAttack
+  handleRandomAttack,
+  handleCloseSocket
 } from './handlers';
-import { usersController } from './controllers/usersController.js';
 
 const wss = new WebSocketServer({
   port: 3000,
@@ -17,7 +17,7 @@ const wss = new WebSocketServer({
 });
 
 wss.on('connection', (ws: WebSocket) => {
-  console.log('CONNECTION', wss.clients.size);
+  console.log('User connected', wss.clients.size);
 
   ws.on('message', (data) => {
     const message = parseClientMessage(data.toString());
@@ -51,7 +51,8 @@ wss.on('connection', (ws: WebSocket) => {
 
   ws.on("close", () => {
     console.log("Client disconnected");
-    usersController.setUserInactive(ws);
+
+    handleCloseSocket(ws);
+
   })
 });
-

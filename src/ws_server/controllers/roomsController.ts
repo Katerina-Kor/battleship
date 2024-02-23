@@ -26,20 +26,22 @@ class RoomsController {
     if (particularRoom) {
       roomWithUser = particularRoom.isUserInRoom(user);
     } else {
-      roomWithUser = this.rooms.find(room => room.isUserInRoom(user));
+      roomWithUser = this.rooms
+      .find(room => room.isAvailable && room.isUserInRoom(user));
     };
     return roomWithUser ? true : false;
   };
 
   public clearRoomsFromUser = (user: User) => {
+    console.log('1', this.rooms);
     const roomWithUserIndex = this.rooms
-      .filter(room => room.isAvailable)
-      .findIndex(room => room.isUserInRoom(user));
+      .findIndex(room => room.isAvailable && room.isUserInRoom(user));
 
     if (roomWithUserIndex >= 0) {
       this.rooms.splice(roomWithUserIndex, 1); 
     };
-  }
+    console.log('2', roomWithUserIndex, this.rooms);
+  };
 
   public closeRoom = (roomData: number | Room) => {
     if (typeof roomData === 'number') {
@@ -61,7 +63,7 @@ class RoomsController {
     } else {
       return roomData.getPlayers();
     }
-  }
+  };
 
   public getRoomsData = () => {
     const data: IServerUpdateRoomData[] = this.rooms

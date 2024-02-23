@@ -2,6 +2,7 @@ import { WebSocket } from "ws";
 import { User } from "../models/user"
 import { database } from "../database/database";
 import { IServerUpdateWinnersData } from "../types";
+import { gamesController } from "./gamesController";
 
 class UsersController {
   private users: User[] = database.users;
@@ -24,12 +25,9 @@ class UsersController {
     return this.users.filter((user) => user.isActive)
   };
 
-  public setUserInactive = (socket: WebSocket) => {
-    const user = this.getUserBySocket(socket);
-    if (user) {
-      user.setInactive();
-      user.socket = null;
-    }
+  public setUserInactive = (user: User) => {
+    user.setInactive();
+    user.socket = null;
   };
 
   public checkUserPassword = (user: User, password: string) => {
@@ -43,7 +41,11 @@ class UsersController {
         name: user.username,
         wins: user.winsQuantity
       }));
-  }
+  };
+
+  // public isUserInGame = (user: User) => {
+  //   gamesController.
+  // }
 }
 
 export const usersController = new UsersController();

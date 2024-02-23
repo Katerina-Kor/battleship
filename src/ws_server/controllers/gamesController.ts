@@ -27,6 +27,12 @@ class GamesController {
     return this.games.find((game) => game.id === gameId) as Game;
   };
 
+  public getGameByUser = (user: User) => {
+    return this.games.find((game) => {
+      return game.getPlayers().find((player) => player.user === user);
+    });
+  }
+
   public getPlayersInGame = (gameData: number | Game) => {
     if (typeof gameData === 'number') {
       const game = this.getGameById(gameData);
@@ -119,7 +125,9 @@ class GamesController {
 
   private checkIsWin = (ships: Ship[]) => {
     return ships.every((ship) => ship.getIsAlive() === false)
-  }
+  };
+
+  
 }
 
 export const gamesController = new GamesController();
