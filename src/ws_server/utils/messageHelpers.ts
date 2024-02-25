@@ -1,4 +1,4 @@
-import { WebSocket } from "ws";
+import { WebSocket } from 'ws';
 import {
   IServerAttackData,
   IServerCreateGameData,
@@ -10,7 +10,7 @@ import {
   IServerUpdateWinnersData,
   MessageType,
   ServerMessageData,
-  ClientMessage
+  ClientMessage,
 } from '../types';
 
 export const parseClientMessage = (message: string) => {
@@ -24,10 +24,10 @@ export const parseClientMessage = (message: string) => {
 };
 
 export const prepareServerMessage = (type: MessageType, data: ServerMessageData) => {
-  const message =  JSON.stringify({
+  const message = JSON.stringify({
     type,
     data: JSON.stringify(data),
-    id: 0
+    id: 0,
   });
   return message;
 };

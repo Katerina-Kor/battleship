@@ -1,5 +1,5 @@
-import { ICellPosition, IShipData } from "../types";
-import { computeShipNeighboringCell, computeShipPositions } from "../utils";
+import { ICellPosition, IShipData } from '../types';
+import { computeShipNeighboringCell, computeShipPositions } from '../utils';
 
 export class Ship {
   private type: string;
@@ -10,10 +10,14 @@ export class Ship {
 
   constructor(shipData: IShipData, positions?: ICellPosition[], neighboringCells?: ICellPosition[]) {
     this.type = shipData.type;
-    this.positions = positions ? positions : computeShipPositions(shipData.position, shipData.direction, shipData.length);
-    this.neighboringCells = neighboringCells ? neighboringCells : computeShipNeighboringCell(shipData.position, shipData.direction, shipData.length);
-    this.length = shipData.length
-  };
+    this.positions = positions
+      ? positions
+      : computeShipPositions(shipData.position, shipData.direction, shipData.length);
+    this.neighboringCells = neighboringCells
+      ? neighboringCells
+      : computeShipNeighboringCell(shipData.position, shipData.direction, shipData.length);
+    this.length = shipData.length;
+  }
 
   public getPositions = () => this.positions;
 
@@ -27,10 +31,10 @@ export class Ship {
     this.length = this.length - 1;
     if (this.length === 0) {
       this.isAlive = false;
-    };
+    }
   };
 
   public getShipNeighboringCells = () => {
     return this.neighboringCells;
   };
-};
+}

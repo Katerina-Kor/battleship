@@ -1,9 +1,7 @@
-import { database } from "../database/database";
-import { Game } from "../models/game";
-import { Ship } from "../models/ship";
-import { BotUser, User } from "../models/user";
-import { ICellPosition, IGamePlayer, IShipData, IShotResult, ShipStatus } from "../types";
-import { getEmptyGameField } from "../utils";
+import { database } from '../database/database';
+import { Game, Ship, User, BotUser } from '../models';
+import { ICellPosition, IGamePlayer, IShipData, IShotResult, ShipStatus } from '../types';
+import { getEmptyGameField } from '../utils';
 
 class GamesController {
   private games: Game[] = database.games;
@@ -16,7 +14,7 @@ class GamesController {
       playerId: index as 0 | 1,
       enemyGameField: getEmptyGameField(),
     }));
-  
+
     const newGame = new Game(gamePlayers);
     this.games.push(newGame);
 
@@ -38,9 +36,9 @@ class GamesController {
         shipsData: null,
         playerId: 1,
         enemyGameField: getEmptyGameField(),
-      }
+      },
     ];
-  
+
     const newGame = new Game(gamePlayers, 0);
     this.games.push(newGame);
 
@@ -55,7 +53,7 @@ class GamesController {
     return this.games.find((game) => {
       return game.getPlayers().find((player) => player.user === user);
     });
-  }
+  };
 
   public getPlayersInGame = (gameData: number | Game) => {
     if (typeof gameData === 'number') {
@@ -63,7 +61,7 @@ class GamesController {
       return game.getPlayers();
     } else {
       return gameData.getPlayers();
-    };
+    }
   };
 
   public addPlayerShips = (gameData: number | Game, playerId: 0 | 1, shipsInfo: IShipData[]) => {
@@ -80,7 +78,7 @@ class GamesController {
   public addPlayerShot = (gameData: number | Game, playerId: 0 | 1, x: number, y: number) => {
     const currentGame = typeof gameData === 'number' ? this.getGameById(gameData) : gameData;
     const currentPlayer = currentGame.getPlayerById(playerId);
-    const index = (x * 10) + y;
+    const index = x * 10 + y;
 
     const ceil = currentPlayer.enemyGameField[index];
     if (ceil.touched) {
@@ -99,7 +97,7 @@ class GamesController {
     const ship = enemyPlayer.ships?.find((ship) => {
       return ship.getPositions().find((position) => {
         return position.x === x && position.y === y;
-      })
+      });
     });
 
     if (!ship) {
@@ -123,13 +121,13 @@ class GamesController {
     } else {
       const isWin = this.checkIsWin(enemyPlayer.ships as Ship[]);
       if (isWin) {
-        const currentPlayer = currentGame.getPlayerById(playerId);;
+        const currentPlayer = currentGame.getPlayerById(playerId);
         currentPlayer.user.increaseWinsQuantity();
       }
       return {
         status: ShipStatus.KILLED,
         neighboringCells: ship.getShipNeighboringCells(),
-        isWin
+        isWin,
       };
     }
   };
@@ -143,15 +141,13 @@ class GamesController {
     const cell = leftCells[randomCellIndex];
     return {
       x: cell.x,
-      y: cell.y
-    }
+      y: cell.y,
+    };
   };
 
   private checkIsWin = (ships: Ship[]) => {
-    return ships.every((ship) => ship.getIsAlive() === false)
+    return ships.every((ship) => ship.getIsAlive() === false);
   };
-
-  
 }
 
 export const gamesController = new GamesController();

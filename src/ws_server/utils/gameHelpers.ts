@@ -1,4 +1,4 @@
-import { IGameCeil } from "../types";
+import { IGameCeil } from '../types';
 
 export const getRandomTurn = () => {
   return Math.random() > 0.5 ? 1 : 0;
@@ -12,9 +12,9 @@ export const getEmptyGameField = () => {
       ceils.push({
         x: i,
         y: j,
-        touched: false
+        touched: false,
       });
-    };
-  };
+    }
+  }
   return ceils;
 };

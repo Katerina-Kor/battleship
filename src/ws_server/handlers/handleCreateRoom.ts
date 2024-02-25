@@ -1,11 +1,8 @@
-import { WebSocket } from "ws";
-import { usersController } from "../controllers/usersController";
-import { roomsController } from '../controllers/roomsController';
-import { sendUpdateRoomMessage } from "../utils";
+import { WebSocket } from 'ws';
+import { usersController, roomsController } from '../controllers';
+import { sendUpdateRoomMessage } from '../utils';
 
-export const handleCreateRoom = (
-  socket: WebSocket
-) => {
+export const handleCreateRoom = (socket: WebSocket) => {
   const currentUser = usersController.getUserBySocket(socket);
 
   if (currentUser) {
@@ -21,7 +18,7 @@ export const handleCreateRoom = (
     activeUsers.forEach(({ socket }) => {
       if (socket && socket.readyState === WebSocket.OPEN) {
         sendUpdateRoomMessage(socket, roomsData);
-      };
+      }
     });
   }
 };

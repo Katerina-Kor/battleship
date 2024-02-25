@@ -1,8 +1,7 @@
-import { WebSocket } from "ws";
-import { User } from "../models/user"
-import { database } from "../database/database";
-import { IServerUpdateWinnersData } from "../types";
-import { gamesController } from "./gamesController";
+import { WebSocket } from 'ws';
+import { User } from '../models';
+import { database } from '../database/database';
+import { IServerUpdateWinnersData } from '../types';
 
 class UsersController {
   private users: User[] = database.users;
@@ -22,7 +21,7 @@ class UsersController {
   };
 
   public getAllActiveUsers = () => {
-    return this.users.filter((user) => user.isActive)
+    return this.users.filter((user) => user.isActive);
   };
 
   public setUserInactive = (user: User) => {
@@ -39,13 +38,9 @@ class UsersController {
       .filter((user) => user.winsQuantity > 0)
       .map((user) => ({
         name: user.username,
-        wins: user.winsQuantity
+        wins: user.winsQuantity,
       }));
   };
-
-  // public isUserInGame = (user: User) => {
-  //   gamesController.
-  // }
 }
 
 export const usersController = new UsersController();

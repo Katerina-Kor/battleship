@@ -9,12 +9,12 @@ import {
   handleAttack,
   handleRandomAttack,
   handleCloseSocket,
-  handleSinglePlay
+  handleSinglePlay,
 } from './handlers';
 
 const wss = new WebSocketServer({
   port: 3000,
-  clientTracking: true
+  clientTracking: true,
 });
 
 wss.on('connection', (ws: WebSocket) => {
@@ -24,42 +24,42 @@ wss.on('connection', (ws: WebSocket) => {
   ws.on('message', (data) => {
     const message = parseClientMessage(data.toString());
     const { type, data: msgData } = message;
-  
+
     if (type === MessageType.REG) {
+      singlePlay = false;
       handleRegistration(msgData, ws);
-    };
+    }
 
     if (type === MessageType.CREATE_ROOM) {
+      singlePlay = false;
       handleCreateRoom(ws);
-    };
+    }
 
     if (type === MessageType.ADD_USER_TO_ROOM) {
       handleAddUserToRoom(msgData, ws);
-    };
+    }
 
     if (type === MessageType.ADD_SHIPS) {
       handleAddShips(msgData, singlePlay);
-    };
+    }
 
     if (type === MessageType.ATTACK) {
       handleAttack(msgData, singlePlay);
-    };
+    }
 
     if (type === MessageType.RANDOM_ATTACK) {
       handleRandomAttack(msgData, singlePlay);
-    };
+    }
 
     if (type === MessageType.SINGLE_PLAY) {
       singlePlay = true;
       handleSinglePlay(ws);
-    };
-    
+    }
   });
 
-  ws.on("close", () => {
-    console.log("Client disconnected");
+  ws.on('close', () => {
+    console.log('Client disconnected');
 
     handleCloseSocket(ws);
-
-  })
+  });
 });

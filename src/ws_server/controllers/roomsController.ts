@@ -1,7 +1,6 @@
-import { database } from "../database/database";
-import { Room } from "../models/room";
-import { User } from "../models/user";
-import { IServerUpdateRoomData } from "../types";
+import { database } from '../database/database';
+import { Room, User } from '../models';
+import { IServerUpdateRoomData } from '../types';
 
 class RoomsController {
   private rooms: Room[] = database.rooms;
@@ -26,21 +25,17 @@ class RoomsController {
     if (particularRoom) {
       roomWithUser = particularRoom.isUserInRoom(user);
     } else {
-      roomWithUser = this.rooms
-      .find(room => room.isAvailable && room.isUserInRoom(user));
-    };
+      roomWithUser = this.rooms.find((room) => room.isAvailable && room.isUserInRoom(user));
+    }
     return roomWithUser ? true : false;
   };
 
   public clearRoomsFromUser = (user: User) => {
-    console.log('1', this.rooms);
-    const roomWithUserIndex = this.rooms
-      .findIndex(room => room.isAvailable && room.isUserInRoom(user));
+    const roomWithUserIndex = this.rooms.findIndex((room) => room.isAvailable && room.isUserInRoom(user));
 
     if (roomWithUserIndex >= 0) {
-      this.rooms.splice(roomWithUserIndex, 1); 
-    };
-    console.log('2', roomWithUserIndex, this.rooms);
+      this.rooms.splice(roomWithUserIndex, 1);
+    }
   };
 
   public closeRoom = (roomData: number | Room) => {
@@ -53,7 +48,7 @@ class RoomsController {
   };
 
   public getRoomById = (roomId: number) => {
-    return this.rooms.find((room) => room.id === roomId) as Room
+    return this.rooms.find((room) => room.id === roomId) as Room;
   };
 
   public getUsersInRoom = (roomData: number | Room) => {
@@ -67,16 +62,16 @@ class RoomsController {
 
   public getRoomsData = () => {
     const data: IServerUpdateRoomData[] = this.rooms
-      .filter(room => room.isAvailable)
-      .map(room => {
-      return {
-        roomId: room.id,
-        roomUsers: room.getPlayers().map(player => ({
-          name: player.username,
-          index: player.id
-        }))
-      }
-    });
+      .filter((room) => room.isAvailable)
+      .map((room) => {
+        return {
+          roomId: room.id,
+          roomUsers: room.getPlayers().map((player) => ({
+            name: player.username,
+            index: player.id,
+          })),
+        };
+      });
     return data;
   };
 }

@@ -1,0 +1,25 @@
+{
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["@typescript-eslint/eslint-plugin"],
+  "extends": [
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:prettier/recommended",
+    "prettier"
+  ],
+  "ignorePatterns": ["front", "src/http_server"],
+  "parserOptions": {
+    "ecmaVersion": 2022,
+    "sourceType": "module"
+  },
+  "root": true,
+  "env": {
+    "node": true
+  },
+  "rules": {
+    "no-var": "error",
+    "semi": "error",
+    "indent": ["error", 2],
+    "prefer-const": "error",
+    "@typescript-eslint/no-unused-vars": "error"
+  }
+}

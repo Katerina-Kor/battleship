@@ -1,6 +1,5 @@
-import { Ship } from "../models/ship";
-import { User } from "../models/user";
-
+import { Ship } from '../models/ship';
+import { User } from '../models/user';
 
 export enum MessageType {
   REG = 'reg',
@@ -15,8 +14,8 @@ export enum MessageType {
   CREATE_ROOM = 'create_room',
   ADD_USER_TO_ROOM = 'add_user_to_room',
   ADD_SHIPS = 'add_ships',
-  SINGLE_PLAY = 'single_play'
-};
+  SINGLE_PLAY = 'single_play',
+}
 
 export enum ShipStatus {
   MISS = 'miss',
@@ -27,225 +26,223 @@ export enum ShipStatus {
 export interface ICellPosition {
   x: number;
   y: number;
-};
+}
 
 export interface IShotResult {
-  status: ShipStatus,
-  neighboringCells: ICellPosition[] | null,
+  status: ShipStatus;
+  neighboringCells: ICellPosition[] | null;
   isWin: boolean;
-};
+}
 
 export interface IShipData {
-  position: ICellPosition,
-  direction: boolean,
-  type: 'small' | 'medium' | 'large' | 'huge',
-  length: number
-};
+  position: ICellPosition;
+  direction: boolean;
+  type: 'small' | 'medium' | 'large' | 'huge';
+  length: number;
+}
 
 export interface IGamePlayer {
   user: User;
   ships: Ship[] | null;
-  shipsData: IShipData[] | null,
+  shipsData: IShipData[] | null;
   playerId: 0 | 1;
-  enemyGameField: IGameCeil[]
-};
+  enemyGameField: IGameCeil[];
+}
 
 export interface IGameCeil {
-  x: number,
-  y: number,
-  touched: boolean
-};
-
+  x: number;
+  y: number;
+  touched: boolean;
+}
 
 export interface IClientRegData {
-  name: string,
-  password: string,
-};
+  name: string;
+  password: string;
+}
 
 export interface IClientRegMessage {
-  type: MessageType.REG,
-  data: IClientRegData,
-  id: 0,
-};
+  type: MessageType.REG;
+  data: IClientRegData;
+  id: 0;
+}
 
 export interface IClientCreateRoomMessage {
-  type: MessageType.CREATE_ROOM,
-  data: '',
-  id: 0,
-};
+  type: MessageType.CREATE_ROOM;
+  data: '';
+  id: 0;
+}
 
 export interface IClientAddUserToRoomData {
-  indexRoom: number,
-};
+  indexRoom: number;
+}
 
 export interface IClientAddUserToRoomMessage {
-  type: MessageType.ADD_USER_TO_ROOM,
-  data: IClientAddUserToRoomData,
-  id: 0,
-};
+  type: MessageType.ADD_USER_TO_ROOM;
+  data: IClientAddUserToRoomData;
+  id: 0;
+}
 
 export interface IClientAddShipsData {
-  gameId: number,
-  ships: IShipData[],
-  indexPlayer: 0 | 1,
-};
+  gameId: number;
+  ships: IShipData[];
+  indexPlayer: 0 | 1;
+}
 
 export interface IClientAddShipsMessage {
-  type: MessageType.ADD_SHIPS,
-  data: IClientAddShipsData,
-  id: 0,
-};
+  type: MessageType.ADD_SHIPS;
+  data: IClientAddShipsData;
+  id: 0;
+}
 
 export interface IClientAttackData {
-  gameId: number,
-  x: number,
-  y: number,
-  indexPlayer: 0 | 1,
-};
+  gameId: number;
+  x: number;
+  y: number;
+  indexPlayer: 0 | 1;
+}
 
 export interface IClientAttackMessage {
-  type: MessageType.ATTACK,
-  data: IClientAttackData,
-  id: 0,
-};
+  type: MessageType.ATTACK;
+  data: IClientAttackData;
+  id: 0;
+}
 
 export interface IClientRandomAttackData {
-  gameId: number,
-  indexPlayer: 0 | 1,
-};
+  gameId: number;
+  indexPlayer: 0 | 1;
+}
 
 export interface IClientRandomAttackMessage {
-  type: MessageType.RANDOM_ATTACK,
-  data: IClientRandomAttackData,
-  id: 0,
-};
+  type: MessageType.RANDOM_ATTACK;
+  data: IClientRandomAttackData;
+  id: 0;
+}
 
 export interface IClientSinglePlayMessage {
-  type: MessageType.SINGLE_PLAY,
-  data: '',
-  id: 0,
-};
+  type: MessageType.SINGLE_PLAY;
+  data: '';
+  id: 0;
+}
 
 export type ClientMessage =
-  IClientRegMessage |
-  IClientCreateRoomMessage |
-  IClientAddUserToRoomMessage |
-  IClientAddShipsMessage |
-  IClientAttackMessage |
-  IClientRandomAttackMessage |
-  IClientSinglePlayMessage;
-
+  | IClientRegMessage
+  | IClientCreateRoomMessage
+  | IClientAddUserToRoomMessage
+  | IClientAddShipsMessage
+  | IClientAttackMessage
+  | IClientRandomAttackMessage
+  | IClientSinglePlayMessage;
 
 export interface IServerRegData {
-  name: string,
-  index: number,
-  error: boolean,
-  errorText: string,
-};
+  name: string;
+  index: number;
+  error: boolean;
+  errorText: string;
+}
 
 export interface IServerRegMessage {
-  type: MessageType.REG,
-  data: IServerRegData,
-  id: 0,
-};
+  type: MessageType.REG;
+  data: IServerRegData;
+  id: 0;
+}
 
 export interface IServerUpdateWinnersData {
-  name: string,
-  wins: number,
-};
+  name: string;
+  wins: number;
+}
 
 export interface IServerUpdateWinnersMessage {
-  type: MessageType.UPDATE_WINNERS,
-  data: IServerUpdateWinnersData[],
-  id: 0,
-};
+  type: MessageType.UPDATE_WINNERS;
+  data: IServerUpdateWinnersData[];
+  id: 0;
+}
 
 export interface IServerCreateGameData {
-  idGame: number,
-  idPlayer: number,
-};
+  idGame: number;
+  idPlayer: number;
+}
 
 export interface IServerCreateGameMessage {
-  type: MessageType.CREATE_GAME,
-  data: IServerCreateGameData,
-  id: 0,
-};
+  type: MessageType.CREATE_GAME;
+  data: IServerCreateGameData;
+  id: 0;
+}
 
 export interface IRoomUsersData {
-  name: string,
-  index: number,
+  name: string;
+  index: number;
 }
 
 export interface IServerUpdateRoomData {
-  roomId: number,
-  roomUsers: IRoomUsersData[]
-};
+  roomId: number;
+  roomUsers: IRoomUsersData[];
+}
 
 export interface IServerUpdateRoomMessage {
-  type: MessageType.UPDATE_ROOM,
-  data: IServerUpdateRoomData[],
-  id: 0,
-};
+  type: MessageType.UPDATE_ROOM;
+  data: IServerUpdateRoomData[];
+  id: 0;
+}
 
 export interface IServerStartGameData {
-  ships: IShipData[],
-  currentPlayerIndex: number,
-};
+  ships: IShipData[];
+  currentPlayerIndex: number;
+}
 
 export interface IServerStartGameMessage {
-  type: MessageType.START_GAME,
-  data: IServerStartGameData,
-  id: 0,
-};
+  type: MessageType.START_GAME;
+  data: IServerStartGameData;
+  id: 0;
+}
 
 export interface IServerAttackData {
-  position: ICellPosition,
-  currentPlayer: number,
-  status: ShipStatus
-};
+  position: ICellPosition;
+  currentPlayer: number;
+  status: ShipStatus;
+}
 
 export interface IServerAttackMessage {
-  type: MessageType.ATTACK,
-  data: IServerAttackData,
-  id: 0,
-};
+  type: MessageType.ATTACK;
+  data: IServerAttackData;
+  id: 0;
+}
 
 export interface IServerTurnData {
-  currentPlayer: number,
-};
+  currentPlayer: number;
+}
 
 export interface IServerTurnMessage {
-  type: MessageType.TURN,
-  data: IServerTurnData,
-  id: 0,
-};
+  type: MessageType.TURN;
+  data: IServerTurnData;
+  id: 0;
+}
 
 export interface IServerFinishData {
-  winPlayer: number,
-};
+  winPlayer: number;
+}
 
 export interface IServerFinishMessage {
-  type: MessageType.FINISH,
-  data: IServerFinishData,
-  id: 0,
-};
+  type: MessageType.FINISH;
+  data: IServerFinishData;
+  id: 0;
+}
 
 export type ServerMessageData =
-  IServerRegData |
-  IServerUpdateWinnersData[] |
-  IServerCreateGameData |
-  IServerUpdateRoomData[] |
-  IServerStartGameData | 
-  IServerAttackData |
-  IServerTurnData |
-  IServerFinishData;
+  | IServerRegData
+  | IServerUpdateWinnersData[]
+  | IServerCreateGameData
+  | IServerUpdateRoomData[]
+  | IServerStartGameData
+  | IServerAttackData
+  | IServerTurnData
+  | IServerFinishData;
 
-  export type ServerMessage =
-  IServerRegMessage |
-  IServerUpdateWinnersMessage |
-  IServerCreateGameMessage |
-  IServerUpdateRoomMessage |
-  IServerStartGameMessage |
-  IServerAttackMessage |
-  IServerTurnMessage |
-  IServerFinishMessage;
+export type ServerMessage =
+  | IServerRegMessage
+  | IServerUpdateWinnersMessage
+  | IServerCreateGameMessage
+  | IServerUpdateRoomMessage
+  | IServerStartGameMessage
+  | IServerAttackMessage
+  | IServerTurnMessage
+  | IServerFinishMessage;

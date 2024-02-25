@@ -1,13 +1,9 @@
-import { WebSocket } from "ws";
-import { usersController } from "../controllers/usersController";
-import { IClientRegData } from "../types";
+import { WebSocket } from 'ws';
+import { usersController, roomsController } from '../controllers';
+import { IClientRegData } from '../types';
 import { sendRegMessage, sendUpdateRoomMessage, sendUpdateWinnersMessage } from '../utils';
-import { roomsController } from "../controllers/roomsController";
 
-export const handleRegistration = (
-  messageData: IClientRegData,
-  socket: WebSocket
-) => {
+export const handleRegistration = (messageData: IClientRegData, socket: WebSocket) => {
   const { name, password } = messageData;
   const user = usersController.getUserByUsername(name);
 
@@ -18,7 +14,7 @@ export const handleRegistration = (
         name: user.username,
         index: user.id,
         error: true,
-        errorText: 'User already has active connection'
+        errorText: 'User already has active connection',
       };
       sendRegMessage(socket, regData);
     } else {
@@ -28,7 +24,7 @@ export const handleRegistration = (
           name: user.username,
           index: user.id,
           error: true,
-          errorText: 'Wrong password'
+          errorText: 'Wrong password',
         };
         sendRegMessage(socket, regData);
         return;
@@ -40,7 +36,7 @@ export const handleRegistration = (
         name: user.username,
         index: user.id,
         error: false,
-        errorText: ''
+        errorText: '',
       };
       sendRegMessage(socket, regData);
 
@@ -57,7 +53,7 @@ export const handleRegistration = (
       name: newUser.username,
       index: newUser.id,
       error: false,
-      errorText: ''
+      errorText: '',
     };
     sendRegMessage(socket, regData);
 
@@ -67,4 +63,4 @@ export const handleRegistration = (
     const roomsData = roomsController.getRoomsData();
     sendUpdateRoomMessage(socket, roomsData);
   }
-}
+};
