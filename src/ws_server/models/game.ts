@@ -1,6 +1,7 @@
 import { Ship } from './ship';
 import { IGamePlayer, IShipData } from "../types";
 import { getRandomTurn } from "../utils";
+import { BotUser } from './user';
 
 let allowId: number = 0;
 
@@ -10,11 +11,11 @@ export class Game {
   private _isReady: boolean = false;
   private _turn: 0 | 1;
 
-  constructor(players: IGamePlayer[]) {
+  constructor(players: IGamePlayer[], turn?: 0 | 1) {
     this.id = allowId;
     allowId++;
     this.players = players;
-    this.turn = getRandomTurn();
+    this.turn = turn !== undefined ? turn : getRandomTurn();
   };
 
   public get id() {
@@ -66,7 +67,7 @@ export class Game {
   };
 
   public getPlayers = () => {
-    return this.players;
+    return this.players[1] instanceof BotUser ? this.players.slice(0, 1) : this.players;
   };
 
   public getPlayerShipsData = (playerId: 0  | 1) => {

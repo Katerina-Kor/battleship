@@ -8,7 +8,8 @@ import {
   handleAddShips,
   handleAttack,
   handleRandomAttack,
-  handleCloseSocket
+  handleCloseSocket,
+  handleSinglePlay
 } from './handlers';
 
 const wss = new WebSocketServer({
@@ -18,6 +19,7 @@ const wss = new WebSocketServer({
 
 wss.on('connection', (ws: WebSocket) => {
   console.log('User connected', wss.clients.size);
+  let singlePlay: boolean = false;
 
   ws.on('message', (data) => {
     const message = parseClientMessage(data.toString());
@@ -36,15 +38,20 @@ wss.on('connection', (ws: WebSocket) => {
     };
 
     if (type === MessageType.ADD_SHIPS) {
-      handleAddShips(msgData);
+      handleAddShips(msgData, singlePlay);
     };
 
     if (type === MessageType.ATTACK) {
-      handleAttack(msgData);
+      handleAttack(msgData, singlePlay);
     };
 
     if (type === MessageType.RANDOM_ATTACK) {
-      handleRandomAttack(msgData);
+      handleRandomAttack(msgData, singlePlay);
+    };
+
+    if (type === MessageType.SINGLE_PLAY) {
+      singlePlay = true;
+      handleSinglePlay(ws);
     };
     
   });

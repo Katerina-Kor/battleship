@@ -1,7 +1,7 @@
 import { WebSocket } from "ws";
 import { usersController } from "../controllers/usersController";
 import { IClientRegData } from "../types";
-import { sendRegMessage, sendUpdateRoomMessage, sendUpdateWinnersMessage } from '../utils/sendMessage';
+import { sendRegMessage, sendUpdateRoomMessage, sendUpdateWinnersMessage } from '../utils';
 import { roomsController } from "../controllers/roomsController";
 
 export const handleRegistration = (

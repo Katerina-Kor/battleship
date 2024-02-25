@@ -47,5 +47,5 @@ export class Room {
   public isUserInRoom = (user: User) => {
     const userInRoom = this._players.find(player => player === user);
     return userInRoom ? true : false;
-  }
+  };
 }

@@ -3,7 +3,7 @@ import { usersController } from "../controllers/usersController";
 import { roomsController } from '../controllers/roomsController';
 import { gamesController } from '../controllers/gamesController';
 import { IClientAddUserToRoomData } from "../types";
-import { sendCreateGameMessage, sendUpdateRoomMessage } from "../utils/sendMessage";
+import { sendCreateGameMessage, sendUpdateRoomMessage } from "../utils";
 
 export const handleAddUserToRoom = (
   messageData: IClientAddUserToRoomData,

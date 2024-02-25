@@ -10,11 +10,15 @@ export class User {
   private _isActive: boolean = true;
   private _socket: WebSocket | null = null;
 
-  constructor(username: string, password: string, socket: WebSocket) {
+  constructor(username: string, password: string, socket: WebSocket | null, id?: number) {
     this.username = username;
     this.password = password;
-    this.id = allowId;
-    allowId++;
+    if (id) {
+      this.id = id;
+    } else {
+      this.id = allowId;
+      allowId++;
+    }
     this.socket = socket;
   };
 
@@ -73,9 +77,16 @@ export class User {
 
   public setInactive = () => {
     this.isActive = false;
+    this.socket = null;
   };
 
   public increaseWinsQuantity = () => {
     this.winsQuantity++;
+  };
+};
+
+export class BotUser extends User {
+  constructor() {
+    super('bot', '1111', null, -1);
   };
 }

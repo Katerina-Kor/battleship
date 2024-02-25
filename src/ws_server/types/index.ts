@@ -14,7 +14,8 @@ export enum MessageType {
   UPDATE_WINNERS = 'update_winners',
   CREATE_ROOM = 'create_room',
   ADD_USER_TO_ROOM = 'add_user_to_room',
-  ADD_SHIPS = 'add_ships'
+  ADD_SHIPS = 'add_ships',
+  SINGLE_PLAY = 'single_play'
 };
 
 export enum ShipStatus {
@@ -23,19 +24,19 @@ export enum ShipStatus {
   SHOT = 'shot',
 }
 
-export interface ICeilPosition {
+export interface ICellPosition {
   x: number;
   y: number;
 };
 
 export interface IShotResult {
   status: ShipStatus,
-  neighboringCells: ICeilPosition[] | null,
+  neighboringCells: ICellPosition[] | null,
   isWin: boolean;
 };
 
 export interface IShipData {
-  position: ICeilPosition,
+  position: ICellPosition,
   direction: boolean,
   type: 'small' | 'medium' | 'large' | 'huge',
   length: number
@@ -119,13 +120,20 @@ export interface IClientRandomAttackMessage {
   id: 0,
 };
 
+export interface IClientSinglePlayMessage {
+  type: MessageType.SINGLE_PLAY,
+  data: '',
+  id: 0,
+};
+
 export type ClientMessage =
   IClientRegMessage |
   IClientCreateRoomMessage |
   IClientAddUserToRoomMessage |
   IClientAddShipsMessage |
   IClientAttackMessage |
-  IClientRandomAttackMessage;
+  IClientRandomAttackMessage |
+  IClientSinglePlayMessage;
 
 
 export interface IServerRegData {
@@ -191,7 +199,7 @@ export interface IServerStartGameMessage {
 };
 
 export interface IServerAttackData {
-  position: ICeilPosition,
+  position: ICellPosition,
   currentPlayer: number,
   status: ShipStatus
 };

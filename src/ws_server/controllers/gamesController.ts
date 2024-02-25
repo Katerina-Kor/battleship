@@ -1,8 +1,8 @@
 import { database } from "../database/database";
 import { Game } from "../models/game";
 import { Ship } from "../models/ship";
-import { User } from "../models/user";
-import { ICeilPosition, IGamePlayer, IServerUpdateRoomData, IShipData, IShotResult, ShipStatus } from "../types";
+import { BotUser, User } from "../models/user";
+import { ICellPosition, IGamePlayer, IShipData, IShotResult, ShipStatus } from "../types";
 import { getEmptyGameField } from "../utils";
 
 class GamesController {
@@ -18,6 +18,30 @@ class GamesController {
     }));
   
     const newGame = new Game(gamePlayers);
+    this.games.push(newGame);
+
+    return newGame;
+  };
+
+  public createSinglePlayGame = (user: User) => {
+    const gamePlayers: IGamePlayer[] = [
+      {
+        user,
+        ships: null,
+        shipsData: null,
+        playerId: 0,
+        enemyGameField: getEmptyGameField(),
+      },
+      {
+        user: new BotUser(),
+        ships: null,
+        shipsData: null,
+        playerId: 1,
+        enemyGameField: getEmptyGameField(),
+      }
+    ];
+  
+    const newGame = new Game(gamePlayers, 0);
     this.games.push(newGame);
 
     return newGame;
@@ -110,7 +134,7 @@ class GamesController {
     }
   };
 
-  public getRandomShot = (gameData: number | Game, playerId: 0 | 1): ICeilPosition => {
+  public getRandomShot = (gameData: number | Game, playerId: 0 | 1): ICellPosition => {
     const currentGame = typeof gameData === 'number' ? this.getGameById(gameData) : gameData;
     const currentPlayer = currentGame.getPlayerById(playerId);
 

@@ -4,7 +4,7 @@ import { gamesController } from "../controllers/gamesController";
 import { prepareServerMessage } from "../utils";
 import { IGamePlayer, MessageType } from "../types";
 import { roomsController } from "../controllers/roomsController";
-import { sendUpdateRoomMessage } from "../utils/sendMessage";
+import { sendUpdateRoomMessage } from "../utils";
 
 
 export const handleCloseSocket = (socket: WebSocket) => {

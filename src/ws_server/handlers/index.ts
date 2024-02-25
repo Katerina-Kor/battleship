@@ -5,3 +5,4 @@ export * from './handleCreateRoom';
 export * from './handleRandomAttack';
 export * from './handleRegistration';
 export * from './handleCloseSocket';
+export * from './handleSinglePlay';

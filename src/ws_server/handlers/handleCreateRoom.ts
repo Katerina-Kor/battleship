@@ -1,7 +1,7 @@
 import { WebSocket } from "ws";
 import { usersController } from "../controllers/usersController";
 import { roomsController } from '../controllers/roomsController';
-import { sendUpdateRoomMessage } from "../utils/sendMessage";
+import { sendUpdateRoomMessage } from "../utils";
 
 export const handleCreateRoom = (
   socket: WebSocket

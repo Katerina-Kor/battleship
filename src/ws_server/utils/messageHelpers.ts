@@ -1,5 +1,27 @@
 import { WebSocket } from "ws";
-import { IServerAttackData, IServerCreateGameData, IServerFinishData, IServerRegData, IServerStartGameData, IServerTurnData, IServerUpdateRoomData, IServerUpdateWinnersData, MessageType, ServerMessageData } from '../types';
+import {
+  IServerAttackData,
+  IServerCreateGameData,
+  IServerFinishData,
+  IServerRegData,
+  IServerStartGameData,
+  IServerTurnData,
+  IServerUpdateRoomData,
+  IServerUpdateWinnersData,
+  MessageType,
+  ServerMessageData,
+  ClientMessage
+} from '../types';
+
+export const parseClientMessage = (message: string) => {
+  const resMessage = JSON.parse(message);
+
+  if (resMessage.data !== '') {
+    resMessage.data = JSON.parse(resMessage.data);
+  }
+
+  return resMessage as ClientMessage;
+};
 
 export const prepareServerMessage = (type: MessageType, data: ServerMessageData) => {
   const message =  JSON.stringify({

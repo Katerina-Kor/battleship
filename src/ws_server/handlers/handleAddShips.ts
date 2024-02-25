@@ -1,15 +1,21 @@
 import { WebSocket } from "ws";
 import { IClientAddShipsData, IShipData, MessageType } from "../types";
-import { prepareServerMessage } from "../utils";
+import { getRandomShips, prepareServerMessage } from "../utils";
 import { gamesController } from '../controllers/gamesController';
-import { sendStartGameMessage, sendTurnMessage } from "../utils/sendMessage";
+import { sendStartGameMessage, sendTurnMessage } from "../utils";
 
 export const handleAddShips = (
   messageData: IClientAddShipsData,
+  isSingle: boolean,
 ) => {
   const { gameId, ships, indexPlayer } = messageData;
   const currentGame = gamesController.getGameById(gameId);
   gamesController.addPlayerShips(currentGame, indexPlayer, ships);
+
+  if (isSingle) {
+    const botShipsData = getRandomShips();
+    gamesController.addPlayerShips(currentGame, 1, botShipsData);
+  }
 
   if (gamesController.checkGameIsReady(currentGame)) {
     const playersInGame = gamesController.getPlayersInGame(currentGame);

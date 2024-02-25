@@ -4,6 +4,7 @@ import { handleAttack } from "./handleAttack";
 
 export const handleRandomAttack = (
   messageData: IClientRandomAttackData,
+  singlePlay: boolean
 ) => {
   const { gameId, indexPlayer } = messageData;
 
@@ -16,5 +17,5 @@ export const handleRandomAttack = (
     y: randomShot.y
   };
 
-  handleAttack(attackData);
+  handleAttack(attackData, singlePlay);
 };

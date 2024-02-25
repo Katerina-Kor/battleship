@@ -1,13 +1,14 @@
 import { WebSocket } from "ws";
-import { IClientAttackData, MessageType, ShipStatus } from "../types";
+import { IClientAttackData, IClientRandomAttackData, MessageType, ShipStatus } from "../types";
 import { prepareServerMessage } from "../utils";
 import { gamesController } from "../controllers/gamesController";
-import { sendAttackMessage, sendTurnMessage, sendUpdateWinnersMessage } from "../utils/sendMessage";
+import { sendAttackMessage, sendTurnMessage, sendUpdateWinnersMessage } from "../utils";
 import { usersController } from "../controllers/usersController";
-import { roomsController } from "../controllers/roomsController";
+import { handleRandomAttack } from "./handleRandomAttack";
 
 export const handleAttack = (
   messageData: IClientAttackData,
+  singlePlay: boolean
 ) => {
   const { gameId, indexPlayer, x, y } = messageData;
 
@@ -101,5 +102,16 @@ export const handleAttack = (
         }
       });
     })
+  }
+
+  if (singlePlay && currentGame.turn === 1) {
+    setTimeout(() => {
+      const randomAttackData: IClientRandomAttackData = {
+        gameId,
+        indexPlayer: 1
+      };
+      handleRandomAttack(randomAttackData, singlePlay)
+    }, 1000)
+    
   }
 }
