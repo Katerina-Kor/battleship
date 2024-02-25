@@ -137,7 +137,7 @@ class GamesController {
     const currentPlayer = currentGame.getPlayerById(playerId);
 
     const leftCells = currentPlayer.enemyGameField.filter((cell) => cell.touched === false);
-    const randomCellIndex = Math.round(Math.random() * leftCells.length - 1);
+    const randomCellIndex = Math.round(Math.random() * (leftCells.length - 1));
     const cell = leftCells[randomCellIndex];
     return {
       x: cell.x,

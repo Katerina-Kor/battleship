@@ -27,12 +27,10 @@ const getEmptyGameField = () => {
   return ceils;
 };
 
-const botField = getEmptyGameField();
-
-const getRandomCell = (): ICellPosition => {
-  const freeCells = botField.filter((cell) => cell.empty === true);
-  const randomCellIndex = Math.round(Math.random() * freeCells.length - 1);
-  const cell = botField[randomCellIndex];
+const getRandomCell = (field: IRandomGameCeil[]): ICellPosition => {
+  const freeCells = field.filter((cell) => cell.empty === true);
+  const randomCellIndex = Math.round(Math.random() * (freeCells.length - 1));
+  const cell = freeCells[randomCellIndex];
   return {
     x: cell.x,
     y: cell.y,
@@ -60,6 +58,7 @@ const getShipType = (num: number) => {
 };
 
 export const getRandomShips = () => {
+  const botField = getEmptyGameField();
   // index = ship quantity, number - deck quantity
   const shipsInitialData = [0, 4, 3, 2, 1];
   const ships: IShipData[] = [];
@@ -69,7 +68,7 @@ export const getRandomShips = () => {
 
     outer: while (shipsQuantity) {
       const cells: ICellPosition[] = [];
-      const cell = getRandomCell();
+      const cell = getRandomCell(botField);
       const direction = getRandomDirection();
       cells.push(cell);
       let isValid: boolean = true;
