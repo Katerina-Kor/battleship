@@ -18,10 +18,11 @@ const wss = new WebSocketServer({
 });
 
 wss.on('connection', (ws: WebSocket) => {
-  console.log('User connected', wss.clients.size);
+  console.log(`User connected. Number of active users - ${wss.clients.size}`);
   let singlePlay: boolean = false;
 
   ws.on('message', (data) => {
+    console.log(`Receive message: ${data.toString()}`);
     const message = parseClientMessage(data.toString());
     const { type, data: msgData } = message;
 
@@ -58,7 +59,7 @@ wss.on('connection', (ws: WebSocket) => {
   });
 
   ws.on('close', () => {
-    console.log('Client disconnected');
+    console.log(`User disconnected. Number of active users - ${wss.clients.size}`);
 
     handleCloseSocket(ws);
   });
