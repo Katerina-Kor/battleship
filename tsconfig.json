@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "target": "ES2015",
+    "module": "CommonJS",
+    "moduleResolution": "Node",
+    "rootDir": "./src",
+    "outDir": "./dist",
+    "strict": true,
+    "esModuleInterop": true,
+    "allowJs": true,
+    "strictPropertyInitialization": false
+  },
+  "include": ["src/ws_server/*", "src/ws_server/database/database.ts", "src/ws_server/types/index.ts"],
+  "exclude": ["node_modules", "front"]
+}
